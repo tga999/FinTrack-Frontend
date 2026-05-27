@@ -1,9 +1,127 @@
+import { useState } from 'react'
+import './Dashboard.css'
+
 function Dashboard() {
-    return (
-        <div className="Dashboard">
-        <h1>Dashboard</h1>
+  const [menuAbierto, setMenuAbierto] = useState(false)
+
+  return (
+    <div className="dashboard-container">
+      <aside className="sidebar">
+        <div className="sidebar-header">
+          <img src="/logo.png" alt="FinTrack" className="sidebar-logo-img" />
+          <p className="sidebar-user">Thiago Galleguillo</p>
         </div>
-    )
+        <nav className="sidebar-nav">
+          <div className="nav-item active">Inicio</div>
+          <div className="nav-item">Transacciones</div>
+          <div className="nav-item">Cuentas</div>
+          <div className="nav-item">Categorias</div>
+        </nav>
+        <div className="sidebar-footer">
+          <div className="registrar-container">
+            <button className="btn-registrar" onClick={() => setMenuAbierto(!menuAbierto)}>
+              + Registrar
+            </button>
+            {menuAbierto && (
+              <div className="menu-registro">
+                <div className="menu-item ingreso">↑ Ingreso</div>
+                <div className="menu-item gasto">↓ Gasto</div>
+              </div>
+            )}
+          </div>
+          <div className="nav-item">Cerrar sesión</div>
+        </div>
+      </aside>
+
+      <main className="dashboard-main">
+        {/* Métricas */}
+        <div className="metrics-grid">
+          <div className="metric-card">
+            <p className="metric-label">Balance total</p>
+            <p className="metric-value">$47.320</p>
+          </div>
+          <div className="metric-card">
+            <p className="metric-label">Ingresos del mes</p>
+            <p className="metric-value ingreso">+$85.000</p>
+          </div>
+          <div className="metric-card">
+            <p className="metric-label">Gastos del mes</p>
+            <p className="metric-value gasto">-$37.680</p>
+          </div>
+        </div>
+
+        {/* Contenido principal */}
+        <div className="dashboard-grid">
+
+          {/* Últimas transacciones */}
+          <div className="dashboard-card">
+            <p className="card-title">Últimas transacciones</p>
+            <div className="transacciones-lista">
+              <div className="transaccion-item">
+                <div className="transaccion-info">
+                  <div className="transaccion-icono gasto">↓</div>
+                  <div>
+                    <p className="transaccion-desc">Supermercado</p>
+                    <p className="transaccion-meta">Comida · hoy</p>
+                  </div>
+                </div>
+                <p className="transaccion-monto gasto">-$4.200</p>
+              </div>
+              <div className="transaccion-item">
+                <div className="transaccion-info">
+                  <div className="transaccion-icono ingreso">↑</div>
+                  <div>
+                    <p className="transaccion-desc">Sueldo</p>
+                    <p className="transaccion-meta">Ingreso · ayer</p>
+                  </div>
+                </div>
+                <p className="transaccion-monto ingreso">+$85.000</p>
+              </div>
+              <div className="transaccion-item">
+                <div className="transaccion-info">
+                  <div className="transaccion-icono gasto">↓</div>
+                  <div>
+                    <p className="transaccion-desc">TV Samsung (3/12)</p>
+                    <p className="transaccion-meta">Electrónica · 20 may</p>
+                  </div>
+                </div>
+                <p className="transaccion-monto gasto">-$10.000</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Cuentas y cuotas */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="dashboard-card">
+              <p className="card-title">Mis cuentas</p>
+              <div className="cuentas-lista">
+                <div className="cuenta-item">
+                  <p className="cuenta-nombre">Efectivo</p>
+                  <p className="cuenta-saldo">$12.000</p>
+                </div>
+                <div className="cuenta-item">
+                  <p className="cuenta-nombre">Débito</p>
+                  <p className="cuenta-saldo">$35.320</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="dashboard-card">
+              <p className="card-title">Cuotas pendientes</p>
+              <div className="cuenta-item">
+                <div>
+                  <p className="cuenta-nombre">TV Samsung</p>
+                  <p className="transaccion-meta">Cuota 3/12 · vence 21 jun</p>
+                </div>
+                <p className="transaccion-monto" style={{ color: '#f5a623' }}>$10.000</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  )
 }
 
 export default Dashboard
