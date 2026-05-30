@@ -1,8 +1,16 @@
 import { useState } from 'react'
 import './Dashboard.css'
+import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
   const [menuAbierto, setMenuAbierto] = useState(false)
+
+  //Logout
+  const navigate = useNavigate()
+  const handleLogout= () =>{
+    localStorage.removeItem('token')
+    navigate('/')
+  }
 
   return (
     <div className="dashboard-container">
@@ -29,7 +37,7 @@ function Dashboard() {
               </div>
             )}
           </div>
-          <div className="nav-item">Cerrar sesión</div>
+          <div className="nav-item" onClick={handleLogout}>Cerrar sesión</div>
         </div>
       </aside>
 
