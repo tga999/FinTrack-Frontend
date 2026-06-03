@@ -1,13 +1,24 @@
-import { useState } from 'react'
-import './Dashboard.css'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import api from '../../services/api'
+import './Dashboard.css'
 
 function Dashboard() {
   const [menuAbierto, setMenuAbierto] = useState(false)
+  const [nombreUsuario, setNombreUsuario] = useState('')
 
-  //Logout
   const navigate = useNavigate()
-  const handleLogout= () =>{
+
+  // trae los datos del usuario logueado al montar el componente
+  useEffect(() => {
+    api.get('/auth/me').then(res => {
+      const { nombre, apellido } = res.data.usuario
+      setNombreUsuario(`${nombre} ${apellido}`)
+    })
+  }, [])
+
+  // borra el token y redirige al login
+  const handleLogout = () => {
     localStorage.removeItem('token')
     navigate('/')
   }
@@ -17,7 +28,8 @@ function Dashboard() {
       <aside className="sidebar">
         <div className="sidebar-header">
           <img src="/logo.png" alt="FinTrack" className="sidebar-logo-img" />
-          <p className="sidebar-user">Thiago Galleguillo</p>
+          {/* nombre real del usuario desde la API */}
+          <p className="sidebar-user">{nombreUsuario}</p>
         </div>
         <nav className="sidebar-nav">
           <div className="nav-item active">Inicio</div>
@@ -27,9 +39,11 @@ function Dashboard() {
         </nav>
         <div className="sidebar-footer">
           <div className="registrar-container">
+            {/* botón que despliega el menú de registro */}
             <button className="btn-registrar" onClick={() => setMenuAbierto(!menuAbierto)}>
               + Registrar
             </button>
+            {/* menú desplegable de ingreso/gasto */}
             {menuAbierto && (
               <div className="menu-registro">
                 <div className="menu-item ingreso">↑ Ingreso</div>
@@ -37,12 +51,13 @@ function Dashboard() {
               </div>
             )}
           </div>
+          {/* cierra sesión y redirige al login */}
           <div className="nav-item" onClick={handleLogout}>Cerrar sesión</div>
         </div>
       </aside>
 
       <main className="dashboard-main">
-        {/* Métricas */}
+        {/* métricas del mes — datos hardcodeados por ahora */}
         <div className="metrics-grid">
           <div className="metric-card">
             <p className="metric-label">Balance total</p>
@@ -58,10 +73,10 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Contenido principal */}
+        {/* contenido principal — dos columnas */}
         <div className="dashboard-grid">
 
-          {/* Últimas transacciones */}
+          {/* últimas transacciones — datos hardcodeados por ahora */}
           <div className="dashboard-card">
             <p className="card-title">Últimas transacciones</p>
             <div className="transacciones-lista">
@@ -98,7 +113,7 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Cuentas y cuotas */}
+          {/* cuentas y cuotas — datos hardcodeados por ahora */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div className="dashboard-card">
               <p className="card-title">Mis cuentas</p>
